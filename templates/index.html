@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Financial Data Visualization</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Financial Data Visualization</h1>
+
+    <!-- File input and upload button -->
+    <input type="file" id="file-input">
+    <button id="upload-button">Upload</button>
+
+    <!-- Container for displaying the graphs -->
+    <div id="charts">
+        <h2>Discretionary vs. Necessary Expenses</h2>
+        <img id="pie-chart" alt="Discretionary vs. Necessary Expenses" src="" style="display: none;">
+        
+        <h2>Debt-to-Income Ratio (Recurring vs One-Time)</h2>
+        <img id="debt-ratio-chart" alt="Debt-to-Income Ratio (Recurring vs One-Time)" src="" style="display: none;">
+        
+        <h2>Savings vs. Cash Flow</h2>
+        <img id="savings-cashflow-chart" alt="Savings vs. Cash Flow" src="" style="display: none;">
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#upload-button').click(function() {
+                var fileInput = $('#file-input')[0];
+                if (fileInput.files.length === 0) {
+                    alert('Please select a file to upload.');
+                    return;
+                }
+
+                var formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Display the images by setting the src attribute and showing the img elements
+                        $('#pie-chart').attr('src', '/tmp/' + response.pie_chart.split('/').pop()).show();
+                        $('#debt-ratio-chart').attr('src', '/tmp/' + response.debt_to_income_ratio_chart.split('/').pop()).show();
+                        $('#savings-cashflow-chart').attr('src', '/tmp/' + response.savings_vs_cashflow_chart.split('/').pop()).show();
+                    },
+                    error: function(xhr, status, error) {
+                        alert('File upload failed: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
