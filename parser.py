@@ -41,24 +41,24 @@ def generate_graphs(data, save_dir='/tmp'):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
         
-    plt.figure(figsize=(15, 5))
+    plt.figure(figsize=(8, 8))
 
     #pie chart for discretionary vs. necessary expenses
-    plt.subplot(1, 3, 1)
+
     labels = 'Discretionary', 'Necessary'
     sizes = [data['discretionary_expense_percentage'], data['necessary_expense_percentage']]
-    colors = ['gold', 'lightcoral']
+    colors = ['gold', 'blue']
     explode = (0.1, 0)  
     plt.pie(sizes, explode=explode, labels=None, colors=colors,
             autopct='%1.1f%%', shadow=True, startangle=140)
     plt.axis('equal') 
-    plt.title('Discretionary vs. Necessary Expenses')
+    plt.title('Discretionary vs. Necessary Expenses', loc='center')
     plt.legend(labels, loc="lower right")
     pie_path = os.path.join(save_dir, 'discretionary_vs_necessary.png')
     plt.savefig(pie_path)
 
-   #pie chart for debt-to-income ratio
-    plt.figure(figsize=(8, 6))
+    #pie chart for debt-to-income ratio
+    plt.figure(figsize=(8, 8))
 
     labels = ['Recurring Income', 'One-Time Income', 'Recurring Expenses', 'One-Time Expenses']
     sizes = [
@@ -73,23 +73,20 @@ def generate_graphs(data, save_dir='/tmp'):
     plt.pie(sizes, labels=None, colors=colors, explode=explode,
             autopct='%1.1f%%', shadow=True, startangle=140)
     plt.axis('equal')
-    plt.title('Debt-to-Income Ratio (Recurring vs One-Time)')
+    plt.title('Debt-to-Income Ratio (Recurring vs One-Time)', loc='center')
     plt.legend(labels, loc="lower right")
     ratio_path = os.path.join(save_dir, 'debt_to_income_ratio.png')
     plt.savefig(ratio_path)
 
-
-    plt.figure(figsize=(15, 5))
-
     #savings vs. cash flow chart
-    plt.subplot(1, 3, 3)
+    plt.figure(figsize=(8, 8))
     labels = ['Savings', 'Cash Flow']
     amounts = [data['savings'], data['cash_flow']]
-    colors = ['green', 'red']
+    colors = ['lightgreen', 'red' if data['cash_flow'] < 0 else 'green']
     bars = plt.bar(labels, amounts, color=colors)
     plt.xlabel('Type')
     plt.ylabel('Amount ($)')
-    plt.title('Savings vs. Cash Flow')
+    plt.title('Savings vs. Cash Flow', loc='center')
     for bar in bars:
         height = bar.get_height()
         plt.text(bar.get_x() + bar.get_width() / 2.0, height / 2, f"${round(height, 2):.2f}", ha='center', va='center', color='white', fontweight='bold')
@@ -206,8 +203,6 @@ def show_graphs():
     graphs = session.get('graphs')
     if not graphs:
         return "No graphs to display", 400
-
-    print("HEHEHE")
     return render_template('graph.html', graphs=graphs)
 
 #handle images from /tmp since normally from static folder
