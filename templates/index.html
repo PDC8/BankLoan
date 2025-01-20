@@ -42,10 +42,7 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        // Display the images by setting the src attribute and showing the img elements
-                        $('#pie-chart').attr('src', '/tmp/' + response.pie_chart.split('/').pop()).show();
-                        $('#debt-ratio-chart').attr('src', '/tmp/' + response.debt_to_income_ratio_chart.split('/').pop()).show();
-                        $('#savings-cashflow-chart').attr('src', '/tmp/' + response.savings_vs_cashflow_chart.split('/').pop()).show();
+                        window.location.href = '/graph';
                     },
                     error: function(xhr, status, error) {
                         alert('File upload failed: ' + error);

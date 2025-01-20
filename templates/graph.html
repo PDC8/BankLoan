@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs</title>
+</head>
+<body>
+    <h1>Generated Graphs</h1>
+    <div>
+        <h2>Discretionary vs. Necessary Expenses</h2>
+        <img src="{{ url_for('tmp_file', filename=graphs['pie_chart'].split('/')[-1]) }}" alt="Discretionary vs. Necessary">
+    </div>
+    <div>
+        <h2>Debt-to-Income Ratio</h2>
+        <img src="{{ url_for('tmp_file', filename=graphs['debt_to_income_ratio_chart'].split('/')[-1]) }}" alt="Debt-to-Income Ratio">
+    </div>
+    <div>
+        <h2>Savings vs. Cash Flow</h2>
+        <img src="{{ url_for('tmp_file', filename=graphs['savings_vs_cashflow_chart'].split('/')[-1]) }}" alt="Savings vs. Cash Flow">
+    </div>
+
+    <button id="return-button">Upload Another File</button>
+    
+    <script>
+        document.getElementById('return-button').addEventListener('click', function() {
+            // Redirect to index.html
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>
